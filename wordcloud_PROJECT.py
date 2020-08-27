@@ -36,7 +36,7 @@ def _upload():
 _upload()
 
 def calculate_frequencies(file_contents):
-    # Here is a list of punctuations and uninteresting words you can use to process your text
+    # Here is a list of punctuations and uninteresting words we will use to process the text
     punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
     uninteresting_words = ["the", "a", "to", "if", "is", "it", "of", "and", "or", "an", "as", "i", "me", "my", \
     "we", "our", "ours", "you", "your", "yours", "he", "she", "him", "his", "her", "hers", "its", "they", "them", \
@@ -44,19 +44,22 @@ def calculate_frequencies(file_contents):
     "have", "has", "had", "do", "does", "did", "but", "at", "by", "with", "from", "here", "when", "where", "how", \
     "all", "any", "both", "each", "few", "more", "some", "such", "no", "nor", "too", "very", "can", "will", "just"]
     
+    new_text = ""
+    for char in file_contents:
+        if char not in punctuations:
+            new_text = new_text + char
+    words = new_text.split()
+    clean_words = []
     d = {}
-    for word in file_contents:
-        new_word = ""
-        for i in word:
-            if i not in punctuations:
-                new_word = new_word + i
-        lower_case_word = new_word.lower()
-        if lower_case_word not in uninteresting_words:
-            lower_case_word = word.lower()
-            if lower_case_word not in d.keys():
-                d[lower_case_word] = 1
-            else:
-                d[lower_case_word] += 1
+    for word in words:
+        if word.isalpha():
+            if word not in uninteresting_words:
+                clean_words.append(word)
+    for alpha_word in clean_words:
+        if alpha_word not in d:
+            d[alpha_word] = 1
+        else:
+            d[alpha_word] += 1
     print(d)
     
     cloud = wordcloud.WordCloud()
